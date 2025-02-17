@@ -23,12 +23,10 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.BottomAppBarDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeTopAppBar
@@ -262,25 +260,28 @@ private fun Greetings(
     modifier: Modifier = Modifier,
     names: List<String> = List(100) { "$it" }
 ) {
+    var selectedName by rememberSaveable { mutableStateOf<String>("") }
     LazyColumn(modifier = modifier.padding(vertical = 4.dp)) {
         items(items = names) { name ->
-            Greeting(name = name)
+            Greeting(name = name, isSelected = (selectedName == name),
+                onNameSelected = { selected ->
+                    selectedName = if (selectedName == selected) "" else selected
+                })
         }
     }
 }
 
 @Composable
-private fun Greeting(name: String, modifier: Modifier = Modifier) {
-
-    var expanded by rememberSaveable { mutableStateOf(false) }
+private fun Greeting(name: String, isSelected: Boolean, onNameSelected: (name: String) -> Unit ,modifier: Modifier = Modifier) {
 
     val extraPadding by animateDpAsState(
-        if (expanded) 48.dp else 0.dp,
+        if (isSelected) 48.dp else 0.dp,
         animationSpec = spring(
             dampingRatio = Spring.DampingRatioMediumBouncy,
             stiffness = Spring.StiffnessLow
         )
     )
+
     Surface(
         color = MaterialTheme.colorScheme.primary,
         modifier = modifier.padding(vertical = 4.dp, horizontal = 8.dp)
@@ -292,11 +293,14 @@ private fun Greeting(name: String, modifier: Modifier = Modifier) {
             ) {
                 Text(text = "Hello, ")
                 Text(text = name)
+                if (isSelected) {
+                    Text(text = "This is additional detail about $name")
+                }
             }
             ElevatedButton(
-                onClick = { expanded = !expanded }
+                onClick = {onNameSelected(name) }
             ) {
-                Text(if (expanded) "Show less" else "Show more")
+                Text(if (isSelected) "Show less" else "Show more")
             }
         }
     }
