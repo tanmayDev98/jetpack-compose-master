@@ -20,9 +20,13 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
 import androidx.compose.material3.ElevatedButton
@@ -32,6 +36,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -41,11 +47,13 @@ import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
@@ -148,38 +156,44 @@ fun LargeTopAppBarCustom(scrollBehavior: TopAppBarScrollBehavior) {
 
 @Composable
 fun BottomAppBarCustom() {
-    BottomAppBar(
-        actions = {
-            IconButton(onClick = { /* do something */ }) {
-                Icon(Icons.Filled.Check, contentDescription = "Localized description")
-            }
-            IconButton(onClick = { /* do something */ }) {
-                Icon(
-                    Icons.Filled.Edit,
-                    contentDescription = "Localized description",
-                )
-            }
-            IconButton(onClick = { /* do something */ }) {
-                Icon(
-                    Icons.Filled.Settings,
-                    contentDescription = "Localized description",
-                )
-            }
-            IconButton(onClick = { /* do something */ }) {
-                Icon(
-                    Icons.Filled.Share,
-                    contentDescription = "Localized description",
-                )
-            }
-        },
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = { /* do something */ },
-            ) {
-                Icon(Icons.Filled.Add, "Localized description")
-            }
-        }
+    var selectedIndex by rememberSaveable {
+        mutableIntStateOf(0)
+    }
+    val items = listOf(
+        BottomNavigationItem(
+            title = "Home",
+            selectedIcon = Icons.Filled.Home,
+            unSelectedIcon = Icons.Outlined.Home,
+        ),
+        BottomNavigationItem(
+            title = "Add",
+            selectedIcon = Icons.Filled.Add,
+            unSelectedIcon = Icons.Outlined.Add,
+        ),
+        BottomNavigationItem(
+            title = "Settings",
+            selectedIcon = Icons.Filled.Settings,
+            unSelectedIcon = Icons.Outlined.Settings,
+        )
     )
+    NavigationBar {
+        items.forEachIndexed{index, item ->
+            NavigationBarItem(
+                selected = selectedIndex == index,
+                onClick = {
+                    selectedIndex = index
+                    //navController
+                },
+                label = {item.title},
+                icon = {
+                    Icon(
+                        imageVector = if(index == selectedIndex) item.selectedIcon else item.unSelectedIcon,
+                        contentDescription = item.title
+                    )
+                }
+            )
+        }
+    }
 }
 
 @Composable
@@ -307,6 +321,13 @@ data class ListDetails(val valuePassed: String)
 //object to have main screen as the start screen in the route
 @Serializable
 object MainScreen
+
+//data class to hold bottom navigation items
+data class BottomNavigationItem(
+    val title: String,
+    val selectedIcon: ImageVector,
+    val unSelectedIcon: ImageVector
+)
 
 /*Previews*/
 @Preview(showBackground = true, widthDp = 320, heightDp = 320)
