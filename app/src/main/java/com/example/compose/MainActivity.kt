@@ -11,27 +11,25 @@ import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeTopAppBar
@@ -59,6 +57,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -85,10 +84,10 @@ fun ComposeApp(modifier: Modifier = Modifier) {
             val mainScreenArgs: MainScreen = navBackStackEntry.toRoute()
             MainScreen(
                 modifier,
-                mainScreenArgs,
                 onListClicked = {
                     navController.navigate(ListDetails(it))
-                }
+                },
+                navController
             )
         }
         composable<ListDetails> {
@@ -102,7 +101,7 @@ fun ComposeApp(modifier: Modifier = Modifier) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen(modifier: Modifier, mainScreenArgs: MainScreen, onListClicked: (number: String) -> Unit) {
+fun MainScreen(modifier: Modifier,onListClicked: (number: String) -> Unit, navController: NavController) {
     var shouldShowOnboarding by rememberSaveable { mutableStateOf(true) }
     var onboardingName by rememberSaveable {  mutableStateOf("") }
     Surface(modifier) {
@@ -111,7 +110,7 @@ fun MainScreen(modifier: Modifier, mainScreenArgs: MainScreen, onListClicked: (n
         } else {
             val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
             Scaffold (modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
-                ,topBar = {LargeTopAppBarCustom(scrollBehavior) }, bottomBar = { BottomAppBarCustom() }) {
+                ,topBar = {LargeTopAppBarCustom(scrollBehavior) }, bottomBar = { BottomAppBarCustom(navController) }) {
                     innerPadding -> Greetings(modifier = Modifier.padding(innerPadding), onListClicked=onListClicked)
             }
             ShowToast(onboardingName)
@@ -155,7 +154,7 @@ fun LargeTopAppBarCustom(scrollBehavior: TopAppBarScrollBehavior) {
 }
 
 @Composable
-fun BottomAppBarCustom() {
+fun BottomAppBarCustom(navController: NavController) {
     var selectedIndex by rememberSaveable {
         mutableIntStateOf(0)
     }
@@ -164,6 +163,7 @@ fun BottomAppBarCustom() {
             title = "Home",
             selectedIcon = Icons.Filled.Home,
             unSelectedIcon = Icons.Outlined.Home,
+            navController = navController.navigate(HomeScreenData("", ""))
         ),
         BottomNavigationItem(
             title = "Add",
@@ -182,7 +182,6 @@ fun BottomAppBarCustom() {
                 selected = selectedIndex == index,
                 onClick = {
                     selectedIndex = index
-                    //navController
                 },
                 label = {item.title},
                 icon = {
@@ -314,6 +313,33 @@ fun ListDetailsScreen(modifier: Modifier, listDetails: ListDetails, onBackClicke
     }
 }
 
+@Composable
+fun AddScreen(modifier: Modifier, onButtonClicked:(value: MainScreenData) -> Unit) {
+    val addDataState by rememberSaveable {  mutableStateOf(MainScreenData("", "")) }
+    Column(modifier = Modifier.fillMaxSize().padding(
+        horizontal = 12.dp, vertical = 0.dp
+    ), verticalArrangement = Arrangement.Center) {
+        Row(modifier = Modifier.fillMaxWidth()) {
+            Text("Enter title", modifier = Modifier.align(Alignment.CenterVertically).weight(1f))
+            Spacer(Modifier.weight(0.25f))
+            OutlinedTextField(modifier = Modifier.fillMaxWidth().weight(2f), value = addDataState.title, onValueChange = {
+                addDataState.title
+            })
+        }
+        Spacer(Modifier.height(12.dp))
+        Row {
+            Text("Enter Description", modifier = Modifier.align(Alignment.CenterVertically).weight(1f))
+            Spacer(Modifier.weight(0.25f))
+            OutlinedTextField(modifier = Modifier.fillMaxWidth().weight(2f), value = addDataState.description, onValueChange = {
+                addDataState.description
+            })
+        }
+        Button(modifier = Modifier.fillMaxWidth().padding(12.dp), onClick = {onButtonClicked(addDataState)}) {
+            Text("Save")
+        }
+    }
+}
+
 //Data class that holds argument to be passed to route
 @Serializable
 data class ListDetails(val valuePassed: String)
@@ -322,11 +348,16 @@ data class ListDetails(val valuePassed: String)
 @Serializable
 object MainScreen
 
+//Data class that holds argument to be passed to home route
+@Serializable
+data class HomeScreenData(val title: String, val description: String)
+
 //data class to hold bottom navigation items
 data class BottomNavigationItem(
     val title: String,
     val selectedIcon: ImageVector,
-    val unSelectedIcon: ImageVector
+    val unSelectedIcon: ImageVector,
+    val navController: Unit
 )
 
 /*Previews*/
@@ -362,5 +393,13 @@ fun ComposeAppPreview() {
 fun ListDetailsScreenPreview() {
     ComposeMasterTheme {
         ListDetailsScreen(Modifier.fillMaxSize(), ListDetails("20"), onBackClicked = {})
+    }
+}
+
+@Preview
+@Composable
+fun AddScreenPreview() {
+    ComposeMasterTheme {
+        AddScreen(modifier = Modifier.fillMaxSize()) { }
     }
 }
