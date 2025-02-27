@@ -6,21 +6,23 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.compose.ui.home.HomeScreen
+import com.example.compose.ui.add.AddScreen
+import com.example.compose.ui.share.ShareScreen
 
+//Top Level navigation graph
 @Composable
 fun ComposeAppGraph(modifier: Modifier = Modifier,
-                    navController: NavHostController = rememberNavController(),
-                    appStartDestination: HomeRoute) {
-    NavHost(navController =  navController, startDestination = appStartDestination, modifier = modifier) {
-        composable<HomeRoute> {navBackStackEntry ->
-            navController.navigate(HomeScreen())
+                    navController: NavHostController) {
+    NavHost(navController =  navController, startDestination = HomeRoute) {
+        composable<HomeRoute> {
+            HomeScreen()
         }
         composable<AddRoute> {
-            navController.navigate(AddScreen())
+            AddScreen()
         }
         composable<ShareRoute> {
-            /*ToDo()*/
+           ShareScreen()
         }
     }
 }
-

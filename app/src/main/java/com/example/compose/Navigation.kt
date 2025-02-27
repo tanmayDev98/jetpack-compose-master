@@ -8,8 +8,11 @@ import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Share
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavOptions
+import androidx.navigation.navOptions
 import kotlinx.serialization.Serializable
-import kotlin.reflect.KClass
 
 //Route for home option
 @Serializable data object HomeRoute
@@ -23,24 +26,49 @@ enum class ComposeAppTopLevelDestinations(
     val selectedIcon: ImageVector,
     val unSelectedIcon: ImageVector,
     val label: String,
-    val route: KClass<*>
+    val route: Any
 ) {
     HOME(
         selectedIcon = Icons.Filled.Home,
         unSelectedIcon = Icons.Outlined.Home,
         label = "Home",
-        route = HomeRoute::class
+        route = HomeRoute
     ),
     ADD(
         selectedIcon = Icons.Filled.Add,
         unSelectedIcon = Icons.Outlined.Add,
         label = "Add",
-        route = AddRoute::class
+        route = AddRoute
     ),
-    Share(
+    SHARE(
         selectedIcon = Icons.Filled.Share,
         unSelectedIcon = Icons.Outlined.Share,
         label = "Share",
-        route = ShareRoute::class
+        route = ShareRoute
     )
+}
+
+//List of all destinations of bottom navigation
+val topLevelDestinations: List<ComposeAppTopLevelDestinations> = ComposeAppTopLevelDestinations.entries
+
+//Navigation Actions to each top level destinations
+fun NavController.navigateToHome(navOptions: NavOptions) = navigate(route = ComposeAppTopLevelDestinations.HOME.route, navOptions)
+fun NavController.navigateToAdd(navOptions: NavOptions) = navigate(route = ComposeAppTopLevelDestinations.ADD.route, navOptions)
+fun NavController.navigateToShare(navOptions: NavOptions) = navigate(route = ComposeAppTopLevelDestinations.SHARE.route, navOptions)
+
+//Common function to call on onClick of navigation
+fun navigateToActions(navController: NavController, destinations: ComposeAppTopLevelDestinations) {
+    val navOptions = navOptions {
+        popUpTo(navController.graph.findStartDestination().id) {
+            saveState = true
+        }
+        launchSingleTop = true
+        restoreState = true
+    }
+
+    when(destinations) {
+        ComposeAppTopLevelDestinations.HOME -> navController.navigateToHome(navOptions)
+        ComposeAppTopLevelDestinations.ADD -> navController.navigateToAdd(navOptions)
+        ComposeAppTopLevelDestinations.SHARE -> navController.navigateToShare(navOptions)
+    }
 }
