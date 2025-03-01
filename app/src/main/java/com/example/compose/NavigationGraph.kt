@@ -10,13 +10,13 @@ import com.example.compose.ui.home.HomeScreen
 import com.example.compose.ui.add.AddScreen
 import com.example.compose.ui.share.ShareScreen
 
-//Top Level navigation graph
+//Top Level bottom navigation graph
 @Composable
 fun ComposeAppGraph(modifier: Modifier = Modifier,
                     navController: NavHostController) {
     NavHost(navController =  navController, startDestination = HomeRoute) {
         composable<HomeRoute> {
-            HomeScreen()
+            HomeScreen(modifier)
         }
         composable<AddRoute> {
             AddScreen()

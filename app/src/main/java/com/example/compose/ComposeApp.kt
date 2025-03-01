@@ -15,12 +15,10 @@ import com.example.compose.ui.theme.ComposeMasterTheme
 fun ComposeApp(modifier: Modifier) {
     ComposeMasterTheme  {
         val navController = rememberNavController()
-        val navBackStackEntry by navController.currentBackStackEntryAsState()
-        val currentDestination = navBackStackEntry?.destination
         Scaffold(
             modifier = modifier.fillMaxSize(),
             bottomBar = {
-                BottomNavigationBar(topLevelDestinations, navController, currentDestination)
+                BottomNavigationBar(topLevelDestinations, navController)
             }
         ) { innerPadding -> ComposeAppGraph(modifier.padding(innerPadding).fillMaxSize(), navController)}
     }
