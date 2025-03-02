@@ -47,7 +47,7 @@ fun BottomNavigationBar(topLevelDestinations: List<ComposeAppTopLevelDestination
     NavigationBar  {
         topLevelDestinations.forEach { destination ->
             ComposeNavigationItem(
-                selected = currentDestination?.hierarchy?.any { it.hasRoute(destination.route::class) } == true,
+                selected = currentDestination?.hierarchy?.any { it.hasRoute(destination.baseRoute::class) } == true,
                 onClick = { navigateToActions(navController, destination) },
                 modifier = Modifier,
                 icon = { Icon(imageVector = destination.unSelectedIcon, contentDescription = destination.label) },
