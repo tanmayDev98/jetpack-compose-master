@@ -11,28 +11,35 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavOptions
+import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.navOptions
 import kotlinx.serialization.Serializable
 
+//Base route for home
+@Serializable data object HomeBaseRoute
 //Route for home option
 @Serializable data object HomeRoute
 //Route for add option
 @Serializable data object AddRoute
 //Route for share option
 @Serializable data object ShareRoute
+//Details route
+@Serializable data object DetailsRoute
 
 //enum class for compose Top Level Destinations
 enum class ComposeAppTopLevelDestinations(
     val selectedIcon: ImageVector,
     val unSelectedIcon: ImageVector,
     val label: String,
-    val route: Any
+    val route: Any,
+    val baseRoute: Any = route
 ) {
     HOME(
         selectedIcon = Icons.Filled.Home,
         unSelectedIcon = Icons.Outlined.Home,
         label = "Home",
-        route = HomeRoute
+        route = HomeRoute,
+        baseRoute = HomeBaseRoute
     ),
     ADD(
         selectedIcon = Icons.Filled.Add,
@@ -55,6 +62,9 @@ val topLevelDestinations: List<ComposeAppTopLevelDestinations> = ComposeAppTopLe
 fun NavController.navigateToHome(navOptions: NavOptions) = navigate(route = ComposeAppTopLevelDestinations.HOME.route, navOptions)
 fun NavController.navigateToAdd(navOptions: NavOptions) = navigate(route = ComposeAppTopLevelDestinations.ADD.route, navOptions)
 fun NavController.navigateToShare(navOptions: NavOptions) = navigate(route = ComposeAppTopLevelDestinations.SHARE.route, navOptions)
+
+//Navigation to card details page
+fun NavController.navigateToDetails() = navigate(route = DetailsRoute)
 
 //Common function to call on onClick of navigation
 fun navigateToActions(navController: NavController, destinations: ComposeAppTopLevelDestinations) {

@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import com.example.compose.ui.components.notes
 
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier) {
+fun HomeScreen(modifier: Modifier = Modifier, onCardClicked: () -> Unit) {
     val scrollState = rememberLazyStaggeredGridState()
     Box(
         modifier = modifier
@@ -28,7 +28,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             state = scrollState
         ) {
-            notes(onCardClick = {}, onEditClick = {})
+            notes(onCardClick = onCardClicked, onEditClick = {})
         }
     }
 }
@@ -36,5 +36,5 @@ fun HomeScreen(modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun HomeScreenPreview() {
-    HomeScreen()
+    HomeScreen(onCardClicked = {})
 }
