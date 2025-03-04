@@ -5,11 +5,11 @@ import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridScope
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.compose.data.model.TaskResource
-import com.example.compose.data.utils.taskList
+import com.example.compose.model.TaskResource
+import com.example.compose.utils.taskList
 
 fun LazyStaggeredGridScope.notes(
-    onCardClick: () -> Unit,
+    onCardClick: (Int) -> Unit,
     onEditClick: () -> Unit,
     taskItemsList: List<TaskResource> = taskList
 ) {

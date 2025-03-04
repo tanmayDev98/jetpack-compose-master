@@ -1,6 +1,6 @@
-package com.example.compose.data.utils
+package com.example.compose.utils
 
-import com.example.compose.data.model.TaskResource
+import com.example.compose.model.TaskResource
 
 val taskList: List<TaskResource> = listOf(
     TaskResource(id = 0, title = "Buy a book", description = "Books to buy \nAnarchy\n Sherlock Holmes\n"),
@@ -15,3 +15,7 @@ val taskList: List<TaskResource> = listOf(
     TaskResource(id = 9, title = "Play Cricket", description = "Need to check and book a court"),
     TaskResource(id = 10, title = "Play Hockey", description = "Need to check and book a court")
 )
+
+fun getItems(id: Int): TaskResource {
+    return taskList[id]
+}

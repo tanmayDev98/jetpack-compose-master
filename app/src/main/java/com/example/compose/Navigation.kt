@@ -13,6 +13,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavOptions
 import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.navOptions
+import com.example.compose.model.TaskResource
 import kotlinx.serialization.Serializable
 
 //Base route for home
@@ -24,7 +25,7 @@ import kotlinx.serialization.Serializable
 //Route for share option
 @Serializable data object ShareRoute
 //Details route
-@Serializable data object DetailsRoute
+@Serializable data class DetailsRoute(val id: Int)
 
 //enum class for compose Top Level Destinations
 enum class ComposeAppTopLevelDestinations(
@@ -64,7 +65,9 @@ fun NavController.navigateToAdd(navOptions: NavOptions) = navigate(route = Compo
 fun NavController.navigateToShare(navOptions: NavOptions) = navigate(route = ComposeAppTopLevelDestinations.SHARE.route, navOptions)
 
 //Navigation to card details page
-fun NavController.navigateToDetails() = navigate(route = DetailsRoute)
+fun NavController.navigateToDetails(id: Int) {
+    navigate(route = DetailsRoute(id))
+}
 
 //Common function to call on onClick of navigation
 fun navigateToActions(navController: NavController, destinations: ComposeAppTopLevelDestinations) {

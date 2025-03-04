@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import com.example.compose.ui.components.notes
 
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier, onCardClicked: () -> Unit) {
+fun HomeScreen(modifier: Modifier = Modifier, onCardClicked: (Int) -> Unit) {
     val scrollState = rememberLazyStaggeredGridState()
     Box(
         modifier = modifier

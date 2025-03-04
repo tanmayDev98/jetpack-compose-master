@@ -1,4 +1,4 @@
-package com.example.compose.data.model
+package com.example.compose.model
 
 data class TaskResource(
     val id: Int,

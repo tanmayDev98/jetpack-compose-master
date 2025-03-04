@@ -22,16 +22,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.compose.data.model.TaskResource
+import com.example.compose.model.TaskResource
 import com.example.compose.ui.theme.ComposeMasterTheme
 
 @Composable
 fun NotesCard(taskData: TaskResource,
-             onEditClicked: () -> Unit,
-             onClick: () -> Unit,
-             modifier: Modifier = Modifier) {
+              onEditClicked: () -> Unit,
+              onClick: (Int) -> Unit,
+              modifier: Modifier = Modifier) {
     Card(
-        onClick = onClick,
+        onClick = {onClick(taskData.id)},
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary),
         modifier = modifier

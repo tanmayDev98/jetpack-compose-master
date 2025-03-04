@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import androidx.navigation.toRoute
 import com.example.compose.ui.add.AddScreen
 import com.example.compose.ui.details.DetailsScreen
 import com.example.compose.ui.home.HomeScreen
@@ -20,8 +21,9 @@ fun ComposeAppGraph(modifier: Modifier = Modifier,
             composable<HomeRoute> {
                 HomeScreen(modifier, navController::navigateToDetails )
             }
-            composable<DetailsRoute> {
-                DetailsScreen()
+            composable<DetailsRoute> {navBackStackEntry ->
+                val details = navBackStackEntry.toRoute<DetailsRoute>()
+                DetailsScreen(modifier, details.id)
             }
         }
         composable<AddRoute> {
