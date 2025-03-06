@@ -12,11 +12,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.compose.ui.theme.ComposeMasterTheme
-import com.example.compose.utils.getItems
+import com.example.compose.utils.getItemById
 
 @Composable
-fun DetailsScreen(modifier: Modifier, id: Int) {
-    val item = getItems(id)
+fun DetailsScreen(modifier: Modifier = Modifier, id: Int) {
+    val item = getItemById(id)
     Column(modifier = modifier.fillMaxSize().padding(12.dp)
 
     ) {
@@ -46,6 +46,6 @@ fun DetailsDescriptionText(titleText: String, modifier: Modifier = Modifier) {
 @Composable
 fun DetailsScreenPreview() {
     ComposeMasterTheme {
-        DetailsScreen(modifier = Modifier.fillMaxSize(), id = 10)
+        DetailsScreen(id = 10)
     }
 }

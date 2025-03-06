@@ -27,7 +27,7 @@ fun ComposeAppGraph(modifier: Modifier = Modifier,
             }
         }
         composable<AddRoute> {
-            AddScreen()
+            AddScreen(modifier)
         }
         composable<ShareRoute> {
            ShareScreen()
