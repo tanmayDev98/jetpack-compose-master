@@ -15,7 +15,7 @@ import com.example.compose.ui.theme.ComposeMasterTheme
 import com.example.compose.utils.getItems
 
 @Composable
-fun DetailsScreen(modifier: Modifier, id: Int) {
+fun DetailsScreen(modifier: Modifier = Modifier, id: Int) {
     val item = getItems(id)
     Column(modifier = modifier.fillMaxSize().padding(12.dp)
 
@@ -46,6 +46,6 @@ fun DetailsDescriptionText(titleText: String, modifier: Modifier = Modifier) {
 @Composable
 fun DetailsScreenPreview() {
     ComposeMasterTheme {
-        DetailsScreen(modifier = Modifier.fillMaxSize(), id = 10)
+        DetailsScreen(id = 10)
     }
 }
