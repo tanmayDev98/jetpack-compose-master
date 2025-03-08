@@ -1,4 +1,4 @@
-package com.example.compose
+package com.example.compose.ui
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -11,9 +11,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavOptions
-import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.navOptions
-import com.example.compose.model.TaskResource
 import kotlinx.serialization.Serializable
 
 //Base route for home
