@@ -1,4 +1,4 @@
-package com.example.compose
+package com.example.compose.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -21,9 +21,9 @@ fun ComposeAppGraph(modifier: Modifier = Modifier,
             composable<HomeRoute> {
                 HomeScreen(modifier, navController::navigateToDetails )
             }
-            composable<DetailsRoute> {navBackStackEntry ->
+            composable<DetailsRoute> { navBackStackEntry ->
                 val details = navBackStackEntry.toRoute<DetailsRoute>()
-                DetailsScreen(modifier, details.id)
+                DetailsScreen(modifier, details.id, navController::popBackStack)
             }
         }
         composable<AddRoute> {

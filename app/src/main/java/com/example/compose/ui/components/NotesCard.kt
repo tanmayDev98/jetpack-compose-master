@@ -27,7 +27,6 @@ import com.example.compose.ui.theme.ComposeMasterTheme
 
 @Composable
 fun NotesCard(taskData: TaskResource,
-              onEditClicked: () -> Unit,
               onClick: (Int) -> Unit,
               modifier: Modifier = Modifier) {
     Card(
@@ -43,7 +42,6 @@ fun NotesCard(taskData: TaskResource,
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     CardTitleText(taskData.title, modifier = Modifier.fillMaxWidth((.8f)))
                     Spacer(modifier = Modifier.weight(1f))
-                    EditButton(onEditClicked)
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 CardDescriptionText(taskData.description)
@@ -53,12 +51,12 @@ fun NotesCard(taskData: TaskResource,
     }
 }
 
-@Composable
-fun EditButton(onClick: () -> Unit) {
-    IconButton(onClick) {
-        Icon(imageVector = Icons.Filled.Edit, contentDescription = "Edit Icon")
-    }
-}
+//@Composable
+//fun EditButton(onClick: () -> Unit) {
+//    IconButton(onClick) {
+//        Icon(imageVector = Icons.Filled.Edit, contentDescription = "Edit Icon")
+//    }
+//}
 
 @Composable
 fun CardTitleText(titleText: String, modifier: Modifier = Modifier) {
@@ -76,6 +74,6 @@ fun CardDescriptionText(description: String) {
 @Composable
 fun NotesCardPreview() {
     ComposeMasterTheme {
-        NotesCard(taskData = TaskResource(0,"Buy a book", "But this year"), onEditClicked = {}, onClick = {})
+        NotesCard(taskData = TaskResource(0,"Buy a book", "But this year"), onClick = {})
     }
 }

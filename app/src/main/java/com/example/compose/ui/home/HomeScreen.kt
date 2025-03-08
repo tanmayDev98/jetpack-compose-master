@@ -28,7 +28,7 @@ fun HomeScreen(modifier: Modifier = Modifier, onCardClicked: (Int) -> Unit) {
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             state = scrollState
         ) {
-            notes(onCardClick = onCardClicked, onEditClick = {})
+            notes(onCardClick = onCardClicked)
         }
     }
 }

@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,27 +28,32 @@ fun AddScreen(modifier: Modifier = Modifier) {
     var descriptionState by rememberSaveable { mutableStateOf("") }
     var showToastState by rememberSaveable { mutableStateOf(false) }
     Box(modifier = modifier.padding(12.dp).fillMaxSize()) {
-        Column {
-            Text("Enter Title")
-            AddTitleItemInput(titleState, onNameChange = {titleState = it})
-            Spacer(modifier = Modifier.height(12.dp))
-            Text("Enter Description")
-            AddDescriptionItemInput(
-                modifier = Modifier.weight(1f),
-                descriptionState,
-                onNameChange = {descriptionState = it})
-             //Should replace this button with app bar button
-//            Button(
-//                onClick = {
-//                    saveItem(titleState, descriptionState)
-//                    showToastState = true
-//                },
-//                enabled = titleState.isNotBlank()
-//            ) {}
-        }
+        AddScreen(
+            titleState = titleState,
+            descriptionState = descriptionState,
+            onTitleChange = {titleState = it},
+            onDescriptionChange = {descriptionState = it}
+        )
         ShowToastMessage("Item has been added",showToastState) {
             showToastState = false
         }
+    }
+}
+
+@Composable
+internal fun AddScreen(titleState: String,
+                       descriptionState: String,
+                       onTitleChange:(String) -> Unit,
+                       onDescriptionChange:(String) -> Unit) {
+    Column {
+        Text("Enter Title")
+        AddTitleItemInput(titleState, onNameChange = onTitleChange)
+        Spacer(modifier = Modifier.height(12.dp))
+        Text("Enter Description")
+        AddDescriptionItemInput(
+            modifier = Modifier.weight(1f),
+            descriptionState,
+            onNameChange = onDescriptionChange)
     }
 }
 
