@@ -23,7 +23,7 @@ fun ComposeAppGraph(modifier: Modifier = Modifier,
             }
             composable<DetailsRoute> { navBackStackEntry ->
                 val details = navBackStackEntry.toRoute<DetailsRoute>()
-                DetailsScreen(modifier, details.id)
+                DetailsScreen(modifier, details.id, navController::popBackStack)
             }
         }
         composable<AddRoute> {

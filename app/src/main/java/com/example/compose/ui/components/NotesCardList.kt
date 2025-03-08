@@ -11,7 +11,6 @@ import com.example.compose.utils.taskList
 
 fun LazyStaggeredGridScope.notes(
     onCardClick: (Int) -> Unit,
-    onEditClick: () -> Unit,
     taskItemsList: List<TaskResource> = getTaskList()
 ) {
     items(
@@ -22,7 +21,6 @@ fun LazyStaggeredGridScope.notes(
         NotesCard(
             taskData = taskResource,
             onClick = onCardClick,
-            onEditClicked = onEditClick,
             modifier = Modifier
                 .padding(horizontal = 8.dp)
         )
