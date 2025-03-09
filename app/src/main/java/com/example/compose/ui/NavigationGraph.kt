@@ -11,12 +11,14 @@ import com.example.compose.ui.add.AddScreen
 import com.example.compose.ui.details.DetailsScreen
 import com.example.compose.ui.home.HomeScreen
 import com.example.compose.ui.share.ShareScreen
+import com.example.compose.utils.handleSave
 
 //Top Level bottom navigation graph
 @Composable
 fun ComposeAppGraph(modifier: Modifier = Modifier,
                     navController: NavHostController,
-                    saveTask: Boolean) {
+                    saveTask: Boolean,
+                    onSaveClick: (Boolean) -> Unit) {
     NavHost(navController =  navController, startDestination = HomeBaseRoute) {
         navigation<HomeBaseRoute>(startDestination = HomeRoute) {
             composable<HomeRoute> {
@@ -28,7 +30,7 @@ fun ComposeAppGraph(modifier: Modifier = Modifier,
             }
         }
         composable<AddRoute> {
-            AddScreen(modifier, saveTask)
+            AddScreen(modifier, saveTask, onSaveClick = onSaveClick)
         }
         composable<ShareRoute> {
            ShareScreen()

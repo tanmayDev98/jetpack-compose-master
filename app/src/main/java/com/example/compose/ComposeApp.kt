@@ -26,7 +26,7 @@ import com.example.compose.ui.components.actions
 import com.example.compose.ui.components.addActions
 import com.example.compose.ui.theme.ComposeMasterTheme
 import com.example.compose.ui.topLevelDestinations
-import com.example.compose.utils.saveItem
+import com.example.compose.utils.handleSave
 
 @Composable
 fun ComposeApp(modifier: Modifier) {
@@ -76,12 +76,8 @@ fun ComposeApp(modifier: Modifier) {
             bottomBar = {
                 BottomNavigationBar(topLevelDestinations, navController)
             }
-        ) { innerPadding -> ComposeAppGraph(modifier.padding(innerPadding).fillMaxSize(), navController, saveTask = saveTriggered) }
-//        LaunchedEffect(saveTriggered) {
-//            if (saveTriggered) {
-//                saveTriggered = false
-//            }
-//        }
+        ) { innerPadding -> ComposeAppGraph(modifier.padding(innerPadding).fillMaxSize(),
+            navController, saveTask = saveTriggered, onSaveClick = {saveTriggered = it}) }
     }
 }
 

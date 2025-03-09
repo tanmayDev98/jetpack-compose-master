@@ -11,7 +11,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -20,11 +19,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.compose.ui.components.ShowToast
-import com.example.compose.utils.saveItem
+import com.example.compose.utils.handleSave
 
 @Composable
 fun AddScreen(modifier: Modifier = Modifier,
-              saveTask: Boolean) {
+              saveTask: Boolean,
+              onSaveClick: (Boolean) -> Unit) {
 
     var titleState by rememberSaveable { mutableStateOf("") }
     var descriptionState by rememberSaveable { mutableStateOf("") }
@@ -32,8 +32,9 @@ fun AddScreen(modifier: Modifier = Modifier,
 
     LaunchedEffect(saveTask) {
         if (saveTask) {
-            saveItem(titleState, descriptionState)
+            handleSave(titleState, descriptionState)
             showToastState = true
+            onSaveClick(false)
         }
     }
 
@@ -95,5 +96,5 @@ fun ShowToastMessage(text: String, show: Boolean, onToast: () -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun AddScreenPreview() {
-    //AddScreen(modifier = Modifier.fillMaxWidth())
+    AddScreen(modifier = Modifier.fillMaxWidth(), saveTask = false, onSaveClick = {})
 }

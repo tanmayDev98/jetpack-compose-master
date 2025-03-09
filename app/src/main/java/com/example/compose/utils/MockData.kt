@@ -27,7 +27,7 @@ private fun addItem(taskResource: TaskResource) {
 }
 
 //To save item in the list
-fun saveItem(title: String, description: String) {
+fun handleSave(title: String, description: String) {
     if (title.isNotBlank()) {
         val taskResource = TaskResource(
             id = taskList.size,
