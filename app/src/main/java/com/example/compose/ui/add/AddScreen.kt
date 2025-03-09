@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -17,22 +19,30 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.compose.model.TaskResource
 import com.example.compose.ui.components.ShowToast
 import com.example.compose.utils.saveItem
-import com.example.compose.utils.taskList
 
 @Composable
-fun AddScreen(modifier: Modifier = Modifier) {
+fun AddScreen(modifier: Modifier = Modifier,
+              saveTask: Boolean) {
+
     var titleState by rememberSaveable { mutableStateOf("") }
     var descriptionState by rememberSaveable { mutableStateOf("") }
     var showToastState by rememberSaveable { mutableStateOf(false) }
+
+    LaunchedEffect(saveTask) {
+        if (saveTask) {
+            saveItem(titleState, descriptionState)
+            showToastState = true
+        }
+    }
+
     Box(modifier = modifier.padding(12.dp).fillMaxSize()) {
         AddScreen(
             titleState = titleState,
             descriptionState = descriptionState,
             onTitleChange = {titleState = it},
-            onDescriptionChange = {descriptionState = it}
+            onDescriptionChange = {descriptionState = it},
         )
         ShowToastMessage("Item has been added",showToastState) {
             showToastState = false
@@ -53,7 +63,8 @@ internal fun AddScreen(titleState: String,
         AddDescriptionItemInput(
             modifier = Modifier.weight(1f),
             descriptionState,
-            onNameChange = onDescriptionChange)
+            onNameChange = onDescriptionChange
+        )
     }
 }
 
@@ -81,20 +92,8 @@ fun ShowToastMessage(text: String, show: Boolean, onToast: () -> Unit) {
    ShowToast(text, show, onToast)
 }
 
-//To add item in the list
-fun saveItem(title: String, description: String) {
-    if (title.isNotBlank()) {
-        val taskResource = TaskResource(
-            id = taskList.size,
-            title = title,
-            description = description
-        )
-        saveItem(taskResource)
-    }
-}
-
 @Preview(showBackground = true)
 @Composable
 fun AddScreenPreview() {
-    AddScreen()
+    //AddScreen(modifier = Modifier.fillMaxWidth())
 }

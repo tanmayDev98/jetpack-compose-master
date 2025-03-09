@@ -3,6 +3,7 @@ package com.example.compose.ui
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Home
@@ -12,6 +13,10 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavOptions
 import androidx.navigation.navOptions
+import com.example.compose.R
+import com.example.compose.ui.components.TopBarActions
+import com.example.compose.ui.components.actions
+import com.example.compose.utils.saveItem
 import kotlinx.serialization.Serializable
 
 //Base route for home
@@ -30,13 +35,15 @@ enum class ComposeAppTopLevelDestinations(
     val selectedIcon: ImageVector,
     val unSelectedIcon: ImageVector,
     val label: String,
+    val actions: List<TopBarActions> = emptyList(),
     val route: Any,
-    val baseRoute: Any = route
+    val baseRoute: Any = route,
 ) {
     HOME(
         selectedIcon = Icons.Filled.Home,
         unSelectedIcon = Icons.Outlined.Home,
         label = "Home",
+        actions = actions,
         route = HomeRoute,
         baseRoute = HomeBaseRoute
     ),
@@ -44,12 +51,14 @@ enum class ComposeAppTopLevelDestinations(
         selectedIcon = Icons.Filled.Add,
         unSelectedIcon = Icons.Outlined.Add,
         label = "Add",
+        actions = actions,
         route = AddRoute
     ),
     SHARE(
         selectedIcon = Icons.Filled.Share,
         unSelectedIcon = Icons.Outlined.Share,
         label = "Share",
+        actions = actions,
         route = ShareRoute
     )
 }

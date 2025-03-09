@@ -22,8 +22,20 @@ fun getItemById(id: Int): TaskResource {
   return getTaskList()[id]
 }
 
-fun saveItem(taskResource: TaskResource) {
+private fun addItem(taskResource: TaskResource) {
   taskList[taskResource.id] = taskResource
+}
+
+//To save item in the list
+fun saveItem(title: String, description: String) {
+    if (title.isNotBlank()) {
+        val taskResource = TaskResource(
+            id = taskList.size,
+            title = title,
+            description = description
+        )
+        addItem(taskResource)
+    }
 }
 
 //for list

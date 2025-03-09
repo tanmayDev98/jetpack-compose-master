@@ -15,7 +15,8 @@ import com.example.compose.ui.share.ShareScreen
 //Top Level bottom navigation graph
 @Composable
 fun ComposeAppGraph(modifier: Modifier = Modifier,
-                    navController: NavHostController) {
+                    navController: NavHostController,
+                    saveTask: Boolean) {
     NavHost(navController =  navController, startDestination = HomeBaseRoute) {
         navigation<HomeBaseRoute>(startDestination = HomeRoute) {
             composable<HomeRoute> {
@@ -27,7 +28,7 @@ fun ComposeAppGraph(modifier: Modifier = Modifier,
             }
         }
         composable<AddRoute> {
-            AddScreen(modifier)
+            AddScreen(modifier, saveTask)
         }
         composable<ShareRoute> {
            ShareScreen()
